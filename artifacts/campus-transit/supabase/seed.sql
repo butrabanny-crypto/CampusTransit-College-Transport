@@ -1,0 +1,102 @@
+-- Idempotent, fictional demonstration data for CampusTransit.
+-- This file creates directory records only; it does not create Auth accounts
+-- or passwords. Real users must sign up / be created through Supabase Auth.
+
+insert into public.profiles (id, full_name, email, phone, role) values
+  ('00000000-0000-4000-8000-000000000001', 'Campus Administrator', 'fixture-admin@campustransit.example.test', '+91 98765 00001', 'admin'),
+  ('00000000-0000-4000-8000-000000000002', 'Ramesh Kumar', 'ramesh@college.com', '+91 98765 00002', 'driver'),
+  ('00000000-0000-4000-8000-000000000003', 'Suresh Babu', 'suresh@college.com', '+91 98765 00003', 'driver'),
+  ('00000000-0000-4000-8000-000000000004', 'Mahesh Rao', 'mahesh@college.com', '+91 98765 00004', 'driver'),
+  ('00000000-0000-4000-8000-000000000005', 'Anil Kumar', 'anil@college.com', '+91 98765 00005', 'driver'),
+  ('00000000-0000-4000-8000-000000000011', 'Banny', 'banny.student@college.com', '+91 98765 00101', 'student'),
+  ('00000000-0000-4000-8000-000000000012', 'Aarav Reddy', 'aarav.student@college.com', '+91 98765 00102', 'student'),
+  ('00000000-0000-4000-8000-000000000013', 'Priya Sharma', 'priya.student@college.com', '+91 98765 00103', 'student'),
+  ('00000000-0000-4000-8000-000000000014', 'Kiran Das', 'kiran.student@college.com', '+91 98765 00104', 'student'),
+  ('00000000-0000-4000-8000-000000000015', 'Meera Rao', 'meera.student@college.com', '+91 98765 00105', 'student'),
+  ('00000000-0000-4000-8000-000000000016', 'Vikram Naidu', 'vikram.student@college.com', '+91 98765 00106', 'student'),
+  ('00000000-0000-4000-8000-000000000017', 'Sana Khan', 'sana.student@college.com', '+91 98765 00107', 'student'),
+  ('00000000-0000-4000-8000-000000000018', 'Dev Patel', 'dev.student@college.com', '+91 98765 00108', 'student'),
+  ('00000000-0000-4000-8000-000000000019', 'Nisha Reddy', 'nisha.student@college.com', '+91 98765 00109', 'student'),
+  ('00000000-0000-4000-8000-000000000020', 'Arjun Kumar', 'arjun.student@college.com', '+91 98765 00110', 'student')
+on conflict do nothing;
+
+insert into public.routes (id, name, start_point, end_point, distance_km, estimated_minutes) values
+  ('10000000-0000-4000-8000-000000000001', 'Route A · Rajampet Loop', 'Rajampet Bus Stand', 'Campus Gate', 12.4, 35),
+  ('10000000-0000-4000-8000-000000000002', 'Route B · Railway Line', 'Railway Station', 'Campus Gate', 9.8, 28),
+  ('10000000-0000-4000-8000-000000000003', 'Route C · Nandalur Road', 'Nandalur Junction', 'Campus Gate', 18.6, 48)
+on conflict do nothing;
+
+insert into public.route_stops (id, route_id, stop_name, latitude, longitude, stop_order) values
+  ('11000000-0000-4000-8000-000000000001', '10000000-0000-4000-8000-000000000001', 'Rajampet Bus Stand', 14.1939000, 79.1618000, 1),
+  ('11000000-0000-4000-8000-000000000002', '10000000-0000-4000-8000-000000000001', 'Railway Station', 14.1819000, 79.1653000, 2),
+  ('11000000-0000-4000-8000-000000000003', '10000000-0000-4000-8000-000000000001', 'Main Road Market', 14.1881000, 79.1496000, 3),
+  ('11000000-0000-4000-8000-000000000004', '10000000-0000-4000-8000-000000000001', 'Campus Gate', 14.1742000, 79.1462000, 4),
+  ('11000000-0000-4000-8000-000000000005', '10000000-0000-4000-8000-000000000002', 'Railway Station', 14.1819000, 79.1653000, 1),
+  ('11000000-0000-4000-8000-000000000006', '10000000-0000-4000-8000-000000000002', 'Old Bus Stand', 14.1899000, 79.1562000, 2),
+  ('11000000-0000-4000-8000-000000000007', '10000000-0000-4000-8000-000000000002', 'Campus Gate', 14.1742000, 79.1462000, 3),
+  ('11000000-0000-4000-8000-000000000008', '10000000-0000-4000-8000-000000000003', 'Nandalur Junction', 14.2322000, 79.1095000, 1),
+  ('11000000-0000-4000-8000-000000000009', '10000000-0000-4000-8000-000000000003', 'Market Circle', 14.1955000, 79.1570000, 2),
+  ('11000000-0000-4000-8000-000000000010', '10000000-0000-4000-8000-000000000003', 'Campus Gate', 14.1742000, 79.1462000, 3)
+on conflict do nothing;
+
+insert into public.buses (id, bus_number, registration_number, capacity, status, fuel_level, last_service_date, next_service_date) values
+  ('20000000-0000-4000-8000-000000000001', 'BUS-01', 'AP 04 TU 1021', 42, 'On Trip', 78, current_date - 22, current_date + 38),
+  ('20000000-0000-4000-8000-000000000002', 'BUS-02', 'AP 04 TU 1022', 36, 'Available', 91, current_date - 35, current_date + 25),
+  ('20000000-0000-4000-8000-000000000003', 'BUS-03', 'AP 04 TU 1023', 48, 'Available', 66, current_date - 18, current_date + 42),
+  ('20000000-0000-4000-8000-000000000004', 'BUS-04', 'AP 04 TU 1024', 32, 'Available', 84, current_date - 5, current_date + 55),
+  ('20000000-0000-4000-8000-000000000005', 'BUS-05', 'AP 04 TU 1025', 40, 'Maintenance', 53, current_date - 76, current_date - 2)
+on conflict do nothing;
+
+insert into public.drivers (id, profile_id, phone, license_number, license_expiry, status) values
+  ('21000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000002', '+91 98765 00002', 'AP-DL-2018-00421', current_date + 520, 'Active'),
+  ('21000000-0000-4000-8000-000000000002', '00000000-0000-4000-8000-000000000003', '+91 98765 00003', 'AP-DL-2017-00518', current_date + 390, 'Active'),
+  ('21000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000004', '+91 98765 00004', 'AP-DL-2019-00807', current_date + 610, 'Active'),
+  ('21000000-0000-4000-8000-000000000004', '00000000-0000-4000-8000-000000000005', '+91 98765 00005', 'AP-DL-2016-00234', current_date + 215, 'On Leave')
+on conflict do nothing;
+
+insert into public.students (id, profile_id, roll_number, department, year, phone, route_id, stop_id) values
+  ('22000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000011', 'CT-2024-001', 'Computer Science', 2, '+91 98765 00101', '10000000-0000-4000-8000-000000000001', '11000000-0000-4000-8000-000000000002'),
+  ('22000000-0000-4000-8000-000000000002', '00000000-0000-4000-8000-000000000012', 'CT-2024-002', 'Information Technology', 2, '+91 98765 00102', '10000000-0000-4000-8000-000000000001', '11000000-0000-4000-8000-000000000001'),
+  ('22000000-0000-4000-8000-000000000003', '00000000-0000-4000-8000-000000000013', 'CT-2023-017', 'Electronics', 3, '+91 98765 00103', '10000000-0000-4000-8000-000000000001', '11000000-0000-4000-8000-000000000003'),
+  ('22000000-0000-4000-8000-000000000004', '00000000-0000-4000-8000-000000000014', 'CT-2025-006', 'Computer Science', 1, '+91 98765 00104', '10000000-0000-4000-8000-000000000001', '11000000-0000-4000-8000-000000000004'),
+  ('22000000-0000-4000-8000-000000000005', '00000000-0000-4000-8000-000000000015', 'CT-2024-011', 'Mechanical', 2, '+91 98765 00105', '10000000-0000-4000-8000-000000000002', '11000000-0000-4000-8000-000000000006'),
+  ('22000000-0000-4000-8000-000000000006', '00000000-0000-4000-8000-000000000016', 'CT-2023-022', 'Civil Engineering', 3, '+91 98765 00106', '10000000-0000-4000-8000-000000000002', '11000000-0000-4000-8000-000000000005'),
+  ('22000000-0000-4000-8000-000000000007', '00000000-0000-4000-8000-000000000017', 'CT-2025-013', 'Computer Science', 1, '+91 98765 00107', '10000000-0000-4000-8000-000000000002', '11000000-0000-4000-8000-000000000007'),
+  ('22000000-0000-4000-8000-000000000008', '00000000-0000-4000-8000-000000000018', 'CT-2024-032', 'Information Technology', 2, '+91 98765 00108', '10000000-0000-4000-8000-000000000003', '11000000-0000-4000-8000-000000000008'),
+  ('22000000-0000-4000-8000-000000000009', '00000000-0000-4000-8000-000000000019', 'CT-2023-038', 'Electronics', 3, '+91 98765 00109', '10000000-0000-4000-8000-000000000003', '11000000-0000-4000-8000-000000000009'),
+  ('22000000-0000-4000-8000-000000000010', '00000000-0000-4000-8000-000000000020', 'CT-2025-025', 'Computer Science', 1, '+91 98765 00110', '10000000-0000-4000-8000-000000000003', '11000000-0000-4000-8000-000000000010')
+on conflict do nothing;
+
+insert into public.trips (id, bus_id, driver_id, route_id, status, started_at, completed_at) values
+  ('30000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000001', '21000000-0000-4000-8000-000000000001', '10000000-0000-4000-8000-000000000001', 'Running', now() - interval '18 minutes', null),
+  ('30000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000002', '21000000-0000-4000-8000-000000000002', '10000000-0000-4000-8000-000000000002', 'Scheduled', null, null),
+  ('30000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000003', '21000000-0000-4000-8000-000000000003', '10000000-0000-4000-8000-000000000003', 'Completed', now() - interval '1 day 55 minutes', now() - interval '1 day 8 minutes')
+on conflict do nothing;
+
+insert into public.bus_locations (id, trip_id, latitude, longitude, speed, recorded_at) values
+  ('31000000-0000-4000-8000-000000000001', '30000000-0000-4000-8000-000000000001', 14.1848000, 79.1605000, 28, now() - interval '1 minute'),
+  ('31000000-0000-4000-8000-000000000002', '30000000-0000-4000-8000-000000000002', 14.1819000, 79.1653000, 0, now() - interval '12 minutes'),
+  ('31000000-0000-4000-8000-000000000003', '30000000-0000-4000-8000-000000000003', 14.1742000, 79.1462000, 0, now() - interval '1 day 8 minutes')
+on conflict do nothing;
+
+insert into public.attendance (id, student_id, trip_id, bus_id, attendance_time, status) values
+  ('32000000-0000-4000-8000-000000000001', '22000000-0000-4000-8000-000000000001', '30000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000001', now() - interval '11 minutes', 'Present'),
+  ('32000000-0000-4000-8000-000000000002', '22000000-0000-4000-8000-000000000002', '30000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000001', now() - interval '9 minutes', 'Present'),
+  ('32000000-0000-4000-8000-000000000003', '22000000-0000-4000-8000-000000000003', '30000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000001', now() - interval '6 minutes', 'Late'),
+  ('32000000-0000-4000-8000-000000000004', '22000000-0000-4000-8000-000000000008', '30000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000003', now() - interval '1 day 42 minutes', 'Present'),
+  ('32000000-0000-4000-8000-000000000005', '22000000-0000-4000-8000-000000000009', '30000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000003', now() - interval '1 day 39 minutes', 'Present')
+on conflict do nothing;
+
+insert into public.maintenance (id, bus_id, service_type, service_date, next_service_date, cost, notes, status) values
+  ('40000000-0000-4000-8000-000000000001', '20000000-0000-4000-8000-000000000005', 'Brake inspection', current_date - 2, current_date + 1, 8200, 'Brake pads and hydraulic line inspection required before release.', 'Overdue'),
+  ('40000000-0000-4000-8000-000000000002', '20000000-0000-4000-8000-000000000004', 'Oil and filter change', current_date - 5, current_date + 55, 4600, 'Routine service completed.', 'Completed')
+on conflict do nothing;
+
+insert into public.notifications (id, user_id, title, message, type, is_read, created_at) values
+  ('41000000-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000011', 'Trip in progress', 'BUS-01 is moving on Route A. Demo GPS Simulation is active.', 'trip', false, now() - interval '15 minutes'),
+  ('41000000-0000-4000-8000-000000000002', '00000000-0000-4000-8000-000000000001', 'Maintenance overdue', 'BUS-05 is awaiting a brake inspection before returning to service.', 'maintenance', false, now() - interval '1 hour')
+on conflict do nothing;
+
+insert into public.emergency_alerts (id, trip_id, bus_id, driver_id, latitude, longitude, message, status, created_at, resolved_at) values
+  ('42000000-0000-4000-8000-000000000001', '30000000-0000-4000-8000-000000000003', '20000000-0000-4000-8000-000000000003', '21000000-0000-4000-8000-000000000003', 14.1742000, 79.1462000, 'Historical drill alert — resolved after the safety check.', 'Resolved', now() - interval '1 day', now() - interval '1 day' + interval '6 minutes')
+on conflict do nothing;

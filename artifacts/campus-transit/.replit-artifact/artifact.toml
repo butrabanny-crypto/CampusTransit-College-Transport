@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "CampusTransit"
+description = "A college transportation platform for admins, drivers, and students, with route and fleet management, trip tracking, QR attendance, safety alerts, and operational insights powered by Supabase."
+version = "1.0.0"
+id = "artifacts/campus-transit"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19751
+
+[services.development]
+run = "pnpm --filter @workspace/campus-transit run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/campus-transit", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/campus-transit/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19751"
+BASE_PATH = "/"

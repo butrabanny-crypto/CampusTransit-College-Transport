@@ -1,0 +1,1766 @@
+============================================================
+MASTER PROMPT — REPLIT AGENT
+COLLEGE TRANSPORT MANAGEMENT SYSTEM
+SUPABASE + REACT + REAL-TIME GPS
+============================================================
+
+You are an expert full-stack developer, Supabase architect,
+UI/UX designer, database engineer, and hackathon mentor.
+
+Build a COMPLETE, WORKING, PROFESSIONAL web application called:
+
+COLLEGE TRANSPORT MANAGEMENT SYSTEM
+
+Product Name:
+CampusTransit
+
+Tagline:
+"Smart, Safe and Connected College Transportation"
+
+This is a hackathon project.
+
+DO NOT create only a UI mockup.
+DO NOT create dummy buttons.
+DO NOT leave major features unfinished.
+
+Build a functional application connected to Supabase.
+
+============================================================
+1. IMPORTANT: REPLIT ENVIRONMENT
+============================================================
+
+This project will be developed and run inside Replit.
+
+You must:
+
+- Create all required files.
+- Install required npm packages.
+- Configure the application for Replit.
+- Make sure the frontend starts correctly.
+- Make sure the application can connect to Supabase.
+- Make sure the project is runnable using Replit.
+- Do not require unnecessary local configuration.
+- Provide clear setup instructions.
+
+The application must work using:
+
+npm install
+npm run dev
+
+or the appropriate Replit start command.
+
+============================================================
+2. SUPABASE CONFIGURATION
+============================================================
+
+Use Supabase as the backend database and authentication system.
+
+SUPABASE PROJECT URL:
+
+https://bxknuzudbgjjdxxzqecu.supabase.co
+
+SUPABASE PUBLISHABLE KEY:
+
+sb_publishable_QLKhPXFsfhdS2w1w7IoVZg_2o_ogWvI
+
+IMPORTANT:
+
+Do not use SQLite.
+
+Do not create another database.
+
+Do not implement custom authentication.
+
+Use Supabase PostgreSQL.
+
+Use Supabase Auth.
+
+Use Supabase Realtime.
+
+Use Supabase Row Level Security.
+
+============================================================
+3. ENVIRONMENT VARIABLES
+============================================================
+
+Create a .env file for development and a .env.example file.
+
+Use:
+
+VITE_SUPABASE_URL=https://bxknuzudbgjjdxxzqecu.supabase.co
+
+VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_QLKhPXFsfhdS2w1w7IoVZg_2o_ogWvI
+
+IMPORTANT:
+
+The publishable key may be used by the frontend.
+
+NEVER request or use a Supabase service-role key.
+
+NEVER expose a service-role or secret key in frontend code.
+
+NEVER commit private secrets to GitHub.
+
+============================================================
+4. TECH STACK
+============================================================
+
+Frontend:
+
+- React
+- Vite
+- React Router
+- JavaScript
+- CSS
+- Responsive design
+
+Backend:
+
+- Supabase
+- PostgreSQL
+- Supabase Auth
+- Supabase Realtime
+
+Maps:
+
+- Leaflet
+- OpenStreetMap
+
+Charts:
+
+- Recharts
+
+QR:
+
+- QR code generation/scanning library
+
+Icons:
+
+- Lucide React or another lightweight icon library
+
+============================================================
+5. PROJECT GOAL
+============================================================
+
+Create a centralized college transportation platform that manages:
+
+1. Buses
+2. Drivers
+3. Students
+4. Routes
+5. Trips
+6. Live GPS tracking
+7. Student bus tracking
+8. QR attendance
+9. Notifications
+10. Emergency/SOS alerts
+11. Bus maintenance
+12. Analytics
+13. Smart route recommendations
+14. Role-based access
+
+============================================================
+6. PROBLEM STATEMENT
+============================================================
+
+College transportation has several problems:
+
+- Students do not know where their bus is.
+- Students do not know the expected arrival time.
+- Admins manually manage buses and drivers.
+- Student bus attendance is difficult to maintain.
+- Bus delays are difficult to monitor.
+- Emergency situations are difficult to track.
+- Bus maintenance can be missed.
+- Some routes have low utilization.
+- Colleges lack centralized transport analytics.
+
+============================================================
+7. SOLUTION
+============================================================
+
+CampusTransit solves these problems with:
+
+LIVE BUS TRACKING
++
+STUDENT PORTAL
++
+DRIVER PORTAL
++
+QR ATTENDANCE
++
+SOS EMERGENCY SYSTEM
++
+NOTIFICATIONS
++
+BUS MAINTENANCE
++
+ANALYTICS
++
+SMART ROUTE RECOMMENDATIONS
+
+============================================================
+8. USER ROLES
+============================================================
+
+Implement exactly three main roles:
+
+ADMIN
+DRIVER
+STUDENT
+
+------------------------------------
+ADMIN
+------------------------------------
+
+Admin can:
+
+- View dashboard
+- Manage buses
+- Manage drivers
+- Manage students
+- Manage routes
+- Manage trips
+- View live buses
+- View attendance
+- View notifications
+- View emergency alerts
+- Manage maintenance
+- View analytics
+- View smart recommendations
+
+------------------------------------
+DRIVER
+------------------------------------
+
+Driver can:
+
+- View driver dashboard
+- View assigned bus
+- View assigned route
+- Start trip
+- End trip
+- Update GPS location
+- View route stops
+- Report vehicle issue
+- Trigger SOS
+- View trip history
+
+------------------------------------
+STUDENT
+------------------------------------
+
+Student can:
+
+- View student dashboard
+- View assigned bus
+- View assigned route
+- Track bus
+- View ETA
+- View next stop
+- View attendance
+- View notifications
+- Display QR code
+- Report transport issue
+
+============================================================
+9. SUPABASE CLIENT
+============================================================
+
+Create:
+
+src/lib/supabase.js
+
+Use:
+
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabasePublishableKey =
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
+export const supabase = createClient(
+  supabaseUrl,
+  supabasePublishableKey
+);
+
+All database operations must use this client.
+
+============================================================
+10. DATABASE SCHEMA
+============================================================
+
+Create a complete SQL file:
+
+supabase/schema.sql
+
+Create these tables:
+
+------------------------------------
+profiles
+------------------------------------
+
+id UUID PRIMARY KEY
+full_name TEXT
+email TEXT
+phone TEXT
+role TEXT
+created_at TIMESTAMPTZ
+
+role values:
+
+admin
+driver
+student
+
+------------------------------------
+buses
+------------------------------------
+
+id UUID PRIMARY KEY
+bus_number TEXT UNIQUE NOT NULL
+registration_number TEXT UNIQUE NOT NULL
+capacity INTEGER NOT NULL
+status TEXT NOT NULL
+fuel_level INTEGER DEFAULT 100
+last_service_date DATE
+next_service_date DATE
+created_at TIMESTAMPTZ DEFAULT NOW()
+
+Status values:
+
+Available
+On Trip
+Maintenance
+Inactive
+
+------------------------------------
+drivers
+------------------------------------
+
+id UUID PRIMARY KEY
+profile_id UUID
+phone TEXT
+license_number TEXT UNIQUE
+license_expiry DATE
+status TEXT
+created_at TIMESTAMPTZ DEFAULT NOW()
+
+------------------------------------
+students
+------------------------------------
+
+id UUID PRIMARY KEY
+profile_id UUID
+roll_number TEXT UNIQUE
+department TEXT
+year INTEGER
+phone TEXT
+route_id UUID
+stop_id UUID
+created_at TIMESTAMPTZ DEFAULT NOW()
+
+------------------------------------
+routes
+------------------------------------
+
+id UUID PRIMARY KEY
+name TEXT
+start_point TEXT
+end_point TEXT
+distance_km DECIMAL
+estimated_minutes INTEGER
+created_at TIMESTAMPTZ DEFAULT NOW()
+
+------------------------------------
+route_stops
+------------------------------------
+
+id UUID PRIMARY KEY
+route_id UUID
+stop_name TEXT
+latitude DECIMAL
+longitude DECIMAL
+stop_order INTEGER
+created_at TIMESTAMPTZ DEFAULT NOW()
+
+------------------------------------
+trips
+------------------------------------
+
+id UUID PRIMARY KEY
+bus_id UUID
+driver_id UUID
+route_id UUID
+status TEXT
+started_at TIMESTAMPTZ
+completed_at TIMESTAMPTZ
+created_at TIMESTAMPTZ DEFAULT NOW()
+
+Status:
+
+Scheduled
+Running
+Completed
+Cancelled
+
+------------------------------------
+bus_locations
+------------------------------------
+
+id UUID PRIMARY KEY
+trip_id UUID
+latitude DECIMAL
+longitude DECIMAL
+speed DECIMAL
+recorded_at TIMESTAMPTZ DEFAULT NOW()
+
+This table must support Supabase Realtime.
+
+------------------------------------
+attendance
+------------------------------------
+
+id UUID PRIMARY KEY
+student_id UUID
+trip_id UUID
+bus_id UUID
+attendance_time TIMESTAMPTZ DEFAULT NOW()
+status TEXT
+
+------------------------------------
+notifications
+------------------------------------
+
+id UUID PRIMARY KEY
+user_id UUID
+title TEXT
+message TEXT
+type TEXT
+is_read BOOLEAN DEFAULT FALSE
+created_at TIMESTAMPTZ DEFAULT NOW()
+
+------------------------------------
+maintenance
+------------------------------------
+
+id UUID PRIMARY KEY
+bus_id UUID
+service_type TEXT
+service_date DATE
+next_service_date DATE
+cost DECIMAL
+notes TEXT
+status TEXT
+created_at TIMESTAMPTZ DEFAULT NOW()
+
+------------------------------------
+emergency_alerts
+------------------------------------
+
+id UUID PRIMARY KEY
+trip_id UUID
+bus_id UUID
+driver_id UUID
+latitude DECIMAL
+longitude DECIMAL
+message TEXT
+status TEXT
+created_at TIMESTAMPTZ DEFAULT NOW()
+resolved_at TIMESTAMPTZ
+
+Status:
+
+Active
+Acknowledged
+Resolved
+
+============================================================
+11. FOREIGN KEY RELATIONSHIPS
+============================================================
+
+Create proper foreign keys.
+
+profiles
+    ↓
+students
+
+profiles
+    ↓
+drivers
+
+routes
+    ↓
+route_stops
+
+routes
+    ↓
+students
+
+routes
+    ↓
+trips
+
+buses
+    ↓
+trips
+
+drivers
+    ↓
+trips
+
+trips
+    ↓
+bus_locations
+
+trips
+    ↓
+attendance
+
+trips
+    ↓
+emergency_alerts
+
+buses
+    ↓
+maintenance
+
+============================================================
+12. ROW LEVEL SECURITY
+============================================================
+
+Enable RLS on all application tables.
+
+ADMIN:
+
+Can read/write all relevant transport data.
+
+DRIVER:
+
+Can:
+
+- View assigned trips
+- View assigned bus
+- View assigned route
+- Update their active trip
+- Insert bus locations for their trip
+- Create emergency alerts
+- Update their trip status
+
+STUDENT:
+
+Can:
+
+- View own profile
+- View own route
+- View assigned bus
+- View live bus locations
+- View own attendance
+- View own notifications
+
+Students must NOT be able to access all student records.
+
+Drivers must NOT be able to access admin-only information.
+
+============================================================
+13. AUTHENTICATION
+============================================================
+
+Use Supabase Auth.
+
+Use:
+
+supabase.auth.signInWithPassword()
+
+supabase.auth.signOut()
+
+supabase.auth.getUser()
+
+supabase.auth.onAuthStateChange()
+
+Create:
+
+Login Page
+Register Page if required
+Protected Routes
+Role-based redirects
+
+After login:
+
+ADMIN → /admin
+DRIVER → /driver
+STUDENT → /student
+
+Do not create custom JWT authentication.
+
+============================================================
+14. ADMIN DASHBOARD
+============================================================
+
+Create a professional admin dashboard.
+
+Dashboard cards:
+
+TOTAL BUSES
+ACTIVE BUSES
+MAINTENANCE BUSES
+DRIVERS
+STUDENTS
+ROUTES
+ACTIVE TRIPS
+TODAY ATTENDANCE
+
+Example:
+
+18 Buses
+7 Active Trips
+1240 Students
+25 Drivers
+12 Routes
+91% Attendance
+
+Add charts:
+
+- Daily trips
+- Bus utilization
+- Student attendance
+- Route popularity
+- Average delays
+- Maintenance cost
+
+============================================================
+15. BUS MANAGEMENT
+============================================================
+
+Admin can:
+
+ADD
+EDIT
+DELETE
+SEARCH
+FILTER
+VIEW DETAILS
+
+Bus details:
+
+Bus Number
+Registration Number
+Capacity
+Status
+Fuel Level
+Assigned Driver
+Assigned Route
+Last Service
+Next Service
+
+Do not allow:
+
+Maintenance bus → Start Trip
+
+Inactive bus → Start Trip
+
+============================================================
+16. DRIVER MANAGEMENT
+============================================================
+
+Admin can:
+
+Add driver
+Edit driver
+Delete driver
+Search driver
+Assign bus
+
+Display:
+
+Name
+Phone
+License
+License expiry
+Status
+Assigned bus
+
+============================================================
+17. STUDENT MANAGEMENT
+============================================================
+
+Admin can:
+
+Add student
+Edit student
+Delete student
+Search student
+Assign route
+Assign stop
+
+Display:
+
+Name
+Roll Number
+Department
+Year
+Phone
+Route
+Stop
+
+============================================================
+18. ROUTE MANAGEMENT
+============================================================
+
+Admin can create and manage routes.
+
+Example:
+
+ROUTE A
+
+Rajampet
+↓
+Railway Station
+↓
+Main Road
+↓
+Market
+↓
+College Campus
+
+Each stop contains:
+
+Stop name
+Latitude
+Longitude
+Order
+
+Show the route on a Leaflet map.
+
+============================================================
+19. LIVE BUS TRACKING
+============================================================
+
+This is the most important feature.
+
+Use:
+
+Leaflet
+OpenStreetMap
+Supabase Realtime
+
+Display:
+
+🚌 Bus marker
+
+Route line
+
+Bus stops
+
+Current location
+
+Last update
+
+ETA
+
+When clicking a bus marker:
+
+BUS-01
+
+Driver:
+Ramesh Kumar
+
+Route:
+Route A
+
+Status:
+Running
+
+ETA:
+8 minutes
+
+============================================================
+20. GPS SIMULATION
+============================================================
+
+Because this is a hackathon project, real GPS hardware is not required.
+
+Create a working simulated GPS system.
+
+When a trip is running:
+
+Move the bus location gradually.
+
+For example:
+
+latitude += small value
+longitude += small value
+
+Store updates in:
+
+bus_locations
+
+Use Supabase Realtime.
+
+The map marker must move automatically.
+
+Display:
+
+"Demo GPS Simulation"
+
+Do not pretend the GPS is real hardware.
+
+============================================================
+21. STUDENT DASHBOARD
+============================================================
+
+Create a beautiful student dashboard.
+
+Show:
+
+Welcome, Student 👋
+
+MY BUS
+
+BUS-01
+
+ROUTE
+
+Rajampet → College
+
+STATUS
+
+🟢 On the way
+
+NEXT STOP
+
+Railway Station
+
+ETA
+
+10 minutes
+
+Buttons:
+
+TRACK BUS
+VIEW ROUTE
+MY ATTENDANCE
+MY QR
+NOTIFICATIONS
+
+============================================================
+22. DRIVER DASHBOARD
+============================================================
+
+Show:
+
+Welcome, Driver 👋
+
+Assigned Bus:
+BUS-01
+
+Route:
+Route A
+
+Trip Status:
+Scheduled
+
+Buttons:
+
+START TRIP
+
+UPDATE LOCATION
+
+REPORT ISSUE
+
+🚨 SOS
+
+END TRIP
+
+Driver should only access assigned data.
+
+============================================================
+23. QR ATTENDANCE
+============================================================
+
+Implement QR attendance.
+
+Student gets a QR code.
+
+QR should contain a safe identifier.
+
+Driver scans QR.
+
+System validates:
+
+1. Student exists.
+2. Student belongs to the route.
+3. Trip is active.
+4. Student has not already been marked present.
+
+Then insert attendance.
+
+Display:
+
+✅ ATTENDANCE MARKED
+
+Student:
+Banny
+
+Bus:
+BUS-01
+
+Time:
+08:15 AM
+
+============================================================
+24. NOTIFICATION SYSTEM
+============================================================
+
+Create notification center.
+
+Examples:
+
+🚌 TRIP STARTED
+
+BUS-01 has started its trip.
+
+📍 BUS NEARBY
+
+BUS-01 is 5 minutes away.
+
+⚠️ DELAY
+
+BUS-01 is delayed by 10 minutes.
+
+🔧 MAINTENANCE
+
+BUS-03 service is due.
+
+🚨 EMERGENCY
+
+Emergency alert received.
+
+Use Supabase Realtime for notifications where practical.
+
+============================================================
+25. SOS EMERGENCY
+============================================================
+
+Driver dashboard must have:
+
+🚨 SOS EMERGENCY
+
+When clicked:
+
+Show confirmation dialog.
+
+If confirmed:
+
+Create emergency_alert.
+
+Save:
+
+Trip
+Bus
+Driver
+Latitude
+Longitude
+Message
+Time
+Status
+
+Admin dashboard should immediately display:
+
+🚨 ACTIVE EMERGENCY
+
+Bus:
+BUS-01
+
+Driver:
+Ramesh Kumar
+
+Route:
+Route A
+
+Location:
+Current GPS
+
+Time:
+08:42 AM
+
+Buttons:
+
+ACKNOWLEDGE
+
+RESOLVE
+
+============================================================
+26. BUS MAINTENANCE
+============================================================
+
+Create maintenance page.
+
+Display:
+
+Bus
+Service type
+Service date
+Next service
+Cost
+Notes
+Status
+
+Automatically show:
+
+⚠️ SERVICE DUE
+
+⚠️ OVERDUE
+
+Do not allow buses under maintenance to start trips.
+
+============================================================
+27. ANALYTICS
+============================================================
+
+Create analytics dashboard.
+
+Charts:
+
+Bus utilization
+Trips per day
+Attendance
+Route popularity
+Average delay
+Maintenance expenses
+
+Use Recharts.
+
+Charts must be responsive.
+
+============================================================
+28. SMART ROUTE OPTIMIZATION
+============================================================
+
+Create a Smart Insights feature.
+
+Analyze:
+
+Students per route
+Bus capacity
+Route distance
+Bus utilization
+Trip frequency
+
+Example:
+
+💡 SMART ROUTE SUGGESTION
+
+Route B:
+12 students
+
+Route C:
+8 students
+
+Suggestion:
+
+"Consider combining Route B and Route C to improve bus utilization and reduce operating cost."
+
+Use a rule-based algorithm.
+
+No external AI API is required.
+
+============================================================
+29. SEARCH AND FILTER
+============================================================
+
+Add search and filtering to:
+
+Buses
+Drivers
+Students
+Routes
+Trips
+Maintenance
+
+Students can be searched by:
+
+Name
+Roll Number
+Department
+
+============================================================
+30. UI/UX
+============================================================
+
+The UI must look like a modern SaaS product.
+
+Design:
+
+Dark navy background
+Teal/green accent
+Blue accent
+Glass-style cards
+Rounded corners
+Modern typography
+Professional icons
+Smooth hover effects
+Clean tables
+Charts
+Maps
+Status badges
+
+Use a sidebar.
+
+Sidebar:
+
+Dashboard
+Buses
+Drivers
+Students
+Routes
+Live Trips
+Attendance
+Maintenance
+Emergency
+Analytics
+Smart Insights
+Notifications
+
+Topbar:
+
+Search
+Notifications
+User profile
+Role
+Logout
+
+============================================================
+31. RESPONSIVE DESIGN
+============================================================
+
+Must work on:
+
+Desktop
+Laptop
+Tablet
+Mobile
+
+Mobile:
+
+Sidebar → mobile menu
+
+Cards → vertical
+
+Tables → horizontal scrolling
+
+Forms → one column
+
+Maps → responsive
+
+============================================================
+32. LOADING STATES
+============================================================
+
+Every page must have loading states.
+
+Examples:
+
+Loading buses...
+
+Loading dashboard...
+
+Loading live location...
+
+============================================================
+33. EMPTY STATES
+============================================================
+
+Examples:
+
+No buses found.
+
+No active trips.
+
+No notifications.
+
+No attendance records.
+
+============================================================
+34. ERROR HANDLING
+============================================================
+
+Show friendly errors.
+
+Examples:
+
+Unable to load buses.
+Please try again.
+
+Unable to update GPS.
+
+Attendance could not be recorded.
+
+Do not show raw database errors to users.
+
+============================================================
+35. REALTIME
+============================================================
+
+Use Supabase Realtime for:
+
+bus_locations
+notifications
+emergency_alerts
+
+When GPS changes:
+
+Admin map updates.
+
+Student map updates.
+
+No page refresh should be required.
+
+When SOS is triggered:
+
+Admin should receive the alert immediately.
+
+============================================================
+36. DEMO DATA
+============================================================
+
+Create realistic demo data.
+
+Buses:
+
+BUS-01
+BUS-02
+BUS-03
+BUS-04
+BUS-05
+
+Drivers:
+
+Ramesh Kumar
+Suresh Babu
+Mahesh Rao
+Anil Kumar
+
+Routes:
+
+Route A
+Route B
+Route C
+
+Create at least:
+
+10 students
+
+Create:
+
+Multiple route stops
+
+Multiple trips
+
+Attendance records
+
+Maintenance records
+
+Notifications
+
+============================================================
+37. DEMO USER SETUP
+============================================================
+
+Create documentation explaining how to create:
+
+ADMIN
+DRIVER
+STUDENT
+
+Supabase Auth users.
+
+Example:
+
+Admin:
+admin@college.com
+
+Driver:
+driver@college.com
+
+Student:
+student@college.com
+
+Do not hardcode passwords into source code.
+
+============================================================
+38. PROJECT STRUCTURE
+============================================================
+
+Create:
+
+college-transport-management/
+
+├── src/
+│   ├── components/
+│   ├── pages/
+│   │   ├── auth/
+│   │   ├── admin/
+│   │   ├── driver/
+│   │   └── student/
+│   ├── layouts/
+│   ├── hooks/
+│   ├── services/
+│   ├── lib/
+│   │   └── supabase.js
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── styles.css
+│
+├── supabase/
+│   ├── schema.sql
+│   ├── seed.sql
+│   └── policies.sql
+│
+├── .env
+├── .env.example
+├── .gitignore
+├── package.json
+├── vite.config.js
+└── README.md
+
+============================================================
+39. DATABASE SQL
+============================================================
+
+Generate:
+
+supabase/schema.sql
+
+containing:
+
+- CREATE TABLE
+- Foreign keys
+- Constraints
+- Indexes
+- RLS
+- RLS policies
+
+Generate:
+
+supabase/seed.sql
+
+containing realistic demo records.
+
+============================================================
+40. IMPORTANT SUPABASE RULE
+============================================================
+
+Do not use:
+
+SQLite
+MongoDB
+Firebase
+Custom JWT
+LocalStorage as the primary database
+Fake JSON database
+
+Use Supabase for persistent application data.
+
+LocalStorage may only be used for harmless UI preferences if required.
+
+============================================================
+41. SECURITY
+============================================================
+
+Never expose:
+
+service_role key
+secret key
+database password
+
+Use:
+
+VITE_SUPABASE_URL
+
+VITE_SUPABASE_PUBLISHABLE_KEY
+
+Use Row Level Security.
+
+Validate user roles.
+
+Do not trust role values supplied directly by the browser.
+
+============================================================
+42. PERFORMANCE
+============================================================
+
+Keep the application fast.
+
+Avoid unnecessary database requests.
+
+Use reusable components.
+
+Use pagination where appropriate.
+
+Use efficient queries.
+
+Subscribe to Realtime only where necessary.
+
+Clean up Realtime subscriptions when components unmount.
+
+============================================================
+43. HACKATHON DEMO FLOW
+============================================================
+
+The final demo should follow this exact story:
+
+STEP 1
+
+Admin Login
+
+↓
+
+STEP 2
+
+Dashboard
+
+Show:
+
+18 buses
+7 active trips
+1240 students
+91% attendance
+
+↓
+
+STEP 3
+
+Open Live Tracking
+
+Show buses moving on map.
+
+↓
+
+STEP 4
+
+Open a bus.
+
+Show:
+
+Bus
+Driver
+Route
+Location
+ETA
+
+↓
+
+STEP 5
+
+Login as Driver.
+
+Start Trip.
+
+↓
+
+STEP 6
+
+GPS simulation begins.
+
+Bus marker moves.
+
+↓
+
+STEP 7
+
+Login as Student.
+
+Student sees:
+
+My Bus
+Current location
+Next stop
+ETA
+
+↓
+
+STEP 8
+
+Show QR attendance.
+
+Driver scans student QR.
+
+Attendance becomes Present.
+
+↓
+
+STEP 9
+
+Trigger SOS from Driver dashboard.
+
+↓
+
+STEP 10
+
+Admin instantly receives:
+
+🚨 EMERGENCY ALERT
+
+↓
+
+STEP 11
+
+Open Analytics.
+
+Show:
+
+Bus utilization
+Attendance
+Trips
+Delays
+
+↓
+
+STEP 12
+
+Open Smart Insights.
+
+Show:
+
+Route optimization recommendation.
+
+============================================================
+44. PROJECT PRESENTATION STORY
+============================================================
+
+Use this story:
+
+PROBLEM:
+
+College transport is fragmented.
+
+Students cannot track buses.
+
+Admins manually manage transport.
+
+Attendance is difficult.
+
+Emergencies are difficult to monitor.
+
+Maintenance is easy to miss.
+
+SOLUTION:
+
+CampusTransit is a smart college transport platform.
+
+It combines:
+
+Real-time tracking
++
+QR attendance
++
+Student portal
++
+Driver portal
++
+SOS
++
+Notifications
++
+Maintenance
++
+Analytics
++
+Smart route optimization
+
+============================================================
+45. FINAL QUALITY REQUIREMENT
+============================================================
+
+Before declaring the project complete, verify:
+
+[ ] Supabase connection works
+[ ] Authentication works
+[ ] Admin login works
+[ ] Driver login works
+[ ] Student login works
+[ ] Role-based routing works
+[ ] Dashboard works
+[ ] Bus CRUD works
+[ ] Driver CRUD works
+[ ] Student CRUD works
+[ ] Route CRUD works
+[ ] Trip creation works
+[ ] Trip completion works
+[ ] GPS simulation works
+[ ] Leaflet map works
+[ ] Supabase Realtime works
+[ ] Student tracking works
+[ ] QR attendance works
+[ ] Notifications work
+[ ] SOS works
+[ ] Maintenance works
+[ ] Analytics works
+[ ] Smart recommendations work
+[ ] RLS policies work
+[ ] Responsive design works
+[ ] No major console errors
+[ ] No broken buttons
+[ ] Data persists after refresh
+
+============================================================
+46. REPLIT AGENT WORKFLOW
+============================================================
+
+Do NOT try to generate everything blindly in one step.
+
+Work in phases.
+
+PHASE 1:
+Set up React/Vite.
+
+PHASE 2:
+Install dependencies.
+
+PHASE 3:
+Configure Supabase.
+
+PHASE 4:
+Create SQL schema.
+
+PHASE 5:
+Create RLS policies.
+
+PHASE 6:
+Create seed data.
+
+PHASE 7:
+Implement authentication.
+
+PHASE 8:
+Create application layout.
+
+PHASE 9:
+Create Admin dashboard.
+
+PHASE 10:
+Create Bus management.
+
+PHASE 11:
+Create Driver management.
+
+PHASE 12:
+Create Student management.
+
+PHASE 13:
+Create Route management.
+
+PHASE 14:
+Create Trip management.
+
+PHASE 15:
+Implement Leaflet map.
+
+PHASE 16:
+Implement simulated GPS.
+
+PHASE 17:
+Implement Supabase Realtime.
+
+PHASE 18:
+Create Student dashboard.
+
+PHASE 19:
+Create Driver dashboard.
+
+PHASE 20:
+Create QR attendance.
+
+PHASE 21:
+Create notifications.
+
+PHASE 22:
+Create SOS system.
+
+PHASE 23:
+Create maintenance.
+
+PHASE 24:
+Create analytics.
+
+PHASE 25:
+Create Smart Insights.
+
+PHASE 26:
+Test all workflows.
+
+PHASE 27:
+Fix errors.
+
+PHASE 28:
+Polish UI.
+
+============================================================
+47. IMPORTANT INSTRUCTION TO REPLIT AGENT
+============================================================
+
+If something is missing or causes an error:
+
+1. Inspect the existing files.
+2. Identify the actual error.
+3. Fix the root cause.
+4. Run/test the application again.
+5. Do not simply explain the error.
+6. Do not leave broken code.
+
+When creating SQL:
+
+Make it compatible with Supabase PostgreSQL.
+
+When creating React:
+
+Make sure imports and routes are valid.
+
+When creating Realtime:
+
+Make sure subscriptions are cleaned up.
+
+When creating RLS:
+
+Make sure users can access only permitted records.
+
+============================================================
+48. FINAL DELIVERABLE
+============================================================
+
+When everything is finished, provide:
+
+1. Complete working source code
+2. Supabase schema
+3. RLS policies
+4. Seed data
+5. Environment configuration
+6. Installation instructions
+7. Replit run instructions
+8. Login setup
+9. Database architecture
+10. Application architecture
+11. Feature list
+12. Testing checklist
+13. Hackathon presentation
+14. 5-minute demo script
+15. Future improvements
+
+MOST IMPORTANT:
+
+BUILD THE ACTUAL WORKING APPLICATION.
+
+DO NOT ONLY WRITE AN EXPLANATION.
+
+DO NOT STOP AFTER CREATING THE UI.
+
+CONNECT THE UI TO SUPABASE.
+
+MAKE ALL MAJOR FEATURES FUNCTIONAL.
+
+MAKE THE FINAL APPLICATION LOOK LIKE A PROFESSIONAL HACKATHON PRODUCT.
+
+============================================================
+END OF MASTER PROMPT
+============================================================
